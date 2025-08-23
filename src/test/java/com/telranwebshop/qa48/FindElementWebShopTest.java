@@ -50,6 +50,68 @@ public class FindElementWebShopTest {
         driver.findElement(By.id("dialog-notifications-success"));
 
         driver.findElement(By.className("master-wrapper-page"));
+
+        driver.findElement(By.linkText("Books"));
+    }
+    @Test
+    public void findElementByCssSelectorTest() {
+
+        driver.findElement(By.cssSelector("h2"));
+
+        driver.findElement(By.cssSelector("#dialog-notifications-success"));
+
+        driver.findElement(By.cssSelector(".master-wrapper-page"));
+
+        driver.findElement(By.cssSelector("[href='/login']"));
+
+        driver.findElement(By.cssSelector("[href*='/reg']"));
+
+        driver.findElement(By.cssSelector("[href^='/wis']"));
+
+        driver.findElement(By.cssSelector("[href$='cart']"));
+
+        driver.findElement(By.cssSelector("div#bar-notification"));
+
+        driver.findElement(By.cssSelector("div.master-wrapper-page"));
+
+        driver.findElement(By.cssSelector("#bar-notification span[title='Close']")); ////tag+id+[attr='value']
+    }
+
+    @Test
+    public void findElementByXpath(){
+
+        driver.findElement(By.xpath("//h2"));
+
+        driver.findElement(By.xpath("//div[@id='dialog-notifications-error']"));
+
+        driver.findElement(By.xpath("//div[@class='master-wrapper-page']"));
+
+        driver.findElement(By.xpath("//div[contains(.,'all')]"));
+
+        driver.findElement(By.xpath("//a[.='Build your own expensive computer']"));
+
+        driver.findElement(By.xpath("//div[@class='master-wrapper-content']/.."));
+
+        driver.findElement(By.xpath("//h2/parent::*"));
+
+        driver.findElement(By.xpath("//h2/parent::div"));
+
+        driver.findElement(By.xpath("//h2/.."));
+
+        driver.findElement(By.xpath("//h2/ancestor::*"));
+
+        driver.findElement(By.xpath("//h2/ancestor::div"));
+
+        driver.findElement(By.xpath("//h2/ancestor::div[2]"));
+
+        driver.findElement(By.xpath("//li/following-sibling::li"));
+
+        driver.findElement(By.xpath("//ul/preceding-sibling::*"));
+
+
+
+
+
     }
 }
 
