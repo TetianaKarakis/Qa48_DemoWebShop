@@ -43,55 +43,10 @@ public class TestBase {
         element.clear();
         element.sendKeys(text);
     }
-    // добавления товара в корзину
-    public void addToCart(String category, int productIndex) {
-        // Переходим в категорию
-        click(By.linkText(category));
 
-        // Находим список товаров и выбираем нужный
-        List<WebElement> products = driver.findElements(By.cssSelector(".product-item .product-title a"));
-        if (products.size() < productIndex || productIndex <= 0) {
-            throw new IllegalArgumentException("Нет товара с таким индексом: " + productIndex);
-        }
-
-        products.get(productIndex - 1).click();
-
-        // Нажимаем "Add to cart"
-        click(By.cssSelector("input[value='Add to cart']"));
-
-        // Проверяем уведомление о добавлении в корзину
-        WebElement notification = driver.findElement(By.cssSelector("p.content"));
-        Assert.assertTrue(notification.getText().contains("The product has been added to your shopping cart"),
-                "Товар не добавлен в корзину!");
-    }
 
     // удаления одного товара из корзины по индексу
-    public void removeItemFromCart(int itemIndex) {
-        // Переходим в корзину
-        click(By.cssSelector("a[href='/cart']"));
 
-        // Получаем список чекбоксов удаления
-        List<WebElement> removeCheckboxes = driver.findElements(By.cssSelector("input[name='removefromcart']"));
-
-        if (removeCheckboxes.isEmpty()) {
-            throw new IllegalStateException("Корзина пуста, нечего удалять!");
-        }
-
-        if (itemIndex <= 0 || itemIndex > removeCheckboxes.size()) {
-            throw new IllegalArgumentException("Нет товара с таким индексом: " + itemIndex);
-        }
-
-        // Отмечаем нужный товар для удаления
-        removeCheckboxes.get(itemIndex - 1).click();
-
-        // Обновляем корзину
-        click(By.name("updatecart"));
-
-        // Проверяем, что количество товаров уменьшилось
-        List<WebElement> remainingItems = driver.findElements(By.cssSelector("input[name='removefromcart']"));
-        Assert.assertEquals(remainingItems.size(), removeCheckboxes.size() - 1,
-                "Товар не был удалён из корзины!");
-    }
 }
 
 

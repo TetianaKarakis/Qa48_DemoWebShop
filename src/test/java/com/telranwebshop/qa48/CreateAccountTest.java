@@ -4,11 +4,10 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class CreateAccountTest extends TestBase{
+public class CreateAccountTest extends TestBase {
 
     @Test
-    public void newUserRegistrationPositiveTest(){
-
+    public void newUserRegistrationPositiveTest() {
 
         //enter email
         driver.findElement(By.cssSelector("a[href='/register']")).click();
@@ -28,9 +27,9 @@ public class CreateAccountTest extends TestBase{
         driver.findElement(By.id("Email")).clear();
         driver.findElement(By.id("Email")).sendKeys(email);
 
-         // это с одноразовым email
+        // это с одноразовым email
         //driver.findElement(By.id("Email")).clear();
-       // driver.findElement(By.id("Email")).sendKeys("tati123@gmail.com");
+        // driver.findElement(By.id("Email")).sendKeys("tati123@gmail.com");
 
         //enter Password    Вводим пароль и подтверждение
         driver.findElement(By.id("Password")).clear();
@@ -45,5 +44,6 @@ public class CreateAccountTest extends TestBase{
         //verify Sing out is displayed
         Assert.assertTrue(driver.findElement(By.linkText("Log out")).isDisplayed(), "Registration failed!");
     }
+
 
 }
