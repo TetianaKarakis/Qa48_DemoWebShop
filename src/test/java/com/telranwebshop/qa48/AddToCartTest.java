@@ -15,5 +15,8 @@ public void addToCarts() {
         addToCart();
         assertProductAdded();
 }
-
+    @Test
+    public void addBookToCartTest() {
+        addProductToCart(new Product().setCategory("Books").setIndex(1));   // категория Books, первый товар
+    }
 }

@@ -7,7 +7,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.List;
@@ -39,14 +38,19 @@ public class TestBase {
     }
 
     public void type(By locator, String text) {
+        if (text!=null){
         WebElement element = driver.findElement(locator);
         element.clear();
         element.sendKeys(text);
-    }
+    }}
 
     public boolean isLogoutLinkDisplayed() {
          return driver.findElement(By.linkText("Log out")).isDisplayed();
      }
+
+    public boolean isLoginErrorDisplayed() {
+        return isElementPresent(By.cssSelector(".validation-summary-errors"));
+    }
 
     public void registrationPagaEnterPassword() {
          driver.findElement(By.id("Password")).clear();
@@ -91,9 +95,9 @@ public class TestBase {
         click(By.cssSelector(".button-1.login-button"));
     }
 
-    public void fillRegiserLoginForm(String email, String password) {
-        type(By.id("Email"), email);
-        type(By.id("Password"), password);
+    public void fillRegiserLoginForm(User user) {
+        type(By.id("Email"), user.getEmail());
+        type(By.id("Password"), user.getPassword());
     }
 
     public void clickOnLoginLink() {
@@ -148,8 +152,23 @@ public class TestBase {
          click(By.name("updatecart"));
      }
 
+    public void addProductToCart(Product product) {
+        // открыть категорию
+        click(By.linkText(product.getCategory()));
 
-    // удаления одного товара из корзины по индексу
+        // выбрать товар по индексу
+        List<WebElement> products = driver.findElements(By.cssSelector(".product-item .product-title a"));
+        products.get(product.getIndex() - 1).click();
+
+        // кликнуть "Add to cart"
+        click(By.cssSelector("input[value='Add to cart']"));
+
+        // проверить уведомление
+        Assert.assertTrue(driver.findElement(By.cssSelector("p.content"))
+                        .getText().contains("The product has been added to your shopping cart"),
+                "Товар не добавлен в корзину!");
+    }
+
 
 }
 
