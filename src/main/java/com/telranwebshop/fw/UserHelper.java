@@ -44,7 +44,7 @@ public class UserHelper extends BaseHelper {
         click(By.cssSelector("a[href='/register']"));
     }
 
-    protected boolean isLogoutButtonDisplayed() {
+   public boolean isLogoutButtonDisplayed() {
         return driver.findElement(By.cssSelector("a[href='/logout']")).isDisplayed();
     }
 
