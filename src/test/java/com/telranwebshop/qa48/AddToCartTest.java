@@ -8,8 +8,14 @@ public class AddToCartTest extends TestBase {
 
     @BeforeMethod
     public  void precondition(){
+        if  (!app.getUser().isLoginLinkPresent()){
+            app.getUser().clickOnSignOutButton();
+        }
         app.getProduct().openHomePage();
-    }@Test
+    }
+
+
+    @Test
 public void addToCarts() {
         app.getProduct().openCategory();
         app.getProduct().selectProductByIndex(1);

@@ -4,8 +4,11 @@ import com.telranwebshop.models.Product;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import java.time.Duration;
 import java.util.List;
 
 public class ProductHelper extends BaseHelper {
@@ -47,19 +50,35 @@ public class ProductHelper extends BaseHelper {
       }
 
     public int getSize() {
-           return driver.findElements(By.cssSelector(".cart-item-row")).size();
-       }
+        // проверяем, есть ли сообщение о пустой корзине
+        List<WebElement> emptyCart = driver.findElements(By.cssSelector(".order-summary-content"));
+        if (!emptyCart.isEmpty() && emptyCart.get(0).getText().contains("Your Shopping Cart is empty!")) {
+            return 0;
+        }
+
+        // если сообщение не найдено, считаем строки с товарами
+        return driver.findElements(By.cssSelector(".cart-item-row")).size();
+    }
+
 
     public void goToCart() {
            click(By.cssSelector("a[href='/cart']"));
        }
 
     public void removeFirstProduct() {
-         click(By.cssSelector("input[name='removefromcart']"));
+        click(By.cssSelector("input[name='removefromcart']"));
+        click(By.name("updatecart"));
 
-
-         click(By.name("updatecart"));
-     }
+        // ждём пока корзина обновится
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.or(
+                        ExpectedConditions.textToBePresentInElementLocated(
+                                By.cssSelector(".order-summary-content"),
+                                "Your Shopping Cart is empty!"),
+                        ExpectedConditions.numberOfElementsToBe(
+                                By.cssSelector(".cart-item-row"), 0)
+                ));
+    }
 
     public void addProductToCart(Product product) {
         // открыть категорию
@@ -72,9 +91,14 @@ public class ProductHelper extends BaseHelper {
         // кликнуть "Add to cart"
         click(By.cssSelector("input[value='Add to cart']"));
 
-        // проверить уведомление
-        Assert.assertTrue(driver.findElement(By.cssSelector("p.content"))
-                        .getText().contains("The product has been added to your shopping cart"),
+        // добавить явное ожидание уведомления
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement notification = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("p.content")
+        ));
+
+        // проверить текст уведомления
+        Assert.assertTrue(notification.getText().contains("The product has been added to your shopping cart"),
                 "Товар не добавлен в корзину!");
     }
 }
