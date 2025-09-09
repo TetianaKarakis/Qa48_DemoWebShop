@@ -1,4 +1,4 @@
-package com.telranwebshop.qa48;
+package com.telranwebshop.models;
 
 public class Product {
     private  String category;

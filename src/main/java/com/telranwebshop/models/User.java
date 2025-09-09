@@ -1,4 +1,4 @@
-package com.telranwebshop.qa48;
+package com.telranwebshop.models;
 
 public class User {
    private String email;
